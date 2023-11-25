@@ -1,8 +1,6 @@
 import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { AppService } from './app.service';
-import { MintTokenDto } from './dtos/mintToken.dto';
-import { SubscribersDto } from './dtos/subscribers.dto';
-import { VotingDto } from './dtos/voting.dto';
+import { OpenBetsDto } from './dtos/openBets.dto copy';
 
 @Controller()
 export class AppController {
@@ -47,4 +45,21 @@ export class AppController {
   getServerWalletAddress() {
     return { result: this.appService.getServerWalletAddress() };
   }
+
+  @Get('lottery-status')
+  async getLotteryStatus() {
+    return { result: await this.appService.getLotteryStatus() };
+  }
+
+  @Get('get-betsOpen')
+  async betsOpen() {
+    return { result: await this.appService.betsOpen() };
+  }
+
+  @Post('open-bets')
+  async openBets(@Body() body: OpenBetsDto) {
+    const { duration } = body;
+    return { result: await this.appService.openBets(duration) };
+  }
+
 }
