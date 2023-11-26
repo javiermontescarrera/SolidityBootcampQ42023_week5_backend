@@ -109,4 +109,33 @@ export class AppService {
       return { success: false, error: error.message };
     }
   }
+    async bet(numberOfBets: string) {
+    try {
+      //approve
+      const contractAddress = await this.contract.getAddress();
+      const allowTx = await this.setTokenContract().approve(
+        contractAddress,
+        ethers.MaxUint256,
+      );
+      await allowTx.wait();
+      //execute bet
+      const tx = await this.contract.betMany(numberOfBets);
+      const receipt = await tx.wait();
+      return { success: true, transactionHash: receipt?.hash };
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  }
+
+  async buy(amount: string) {
+    try {
+      const tx = await this.contract.purchaseTokens({
+        value: ethers.parseUnits(amount) / TOKEN_RATIO,
+      });
+      const receipt = await tx.wait();
+      return { success: true, transactionHash: receipt?.hash };
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  }
 }
