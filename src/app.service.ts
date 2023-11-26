@@ -100,6 +100,11 @@ export class AppService {
     }
   }
 
+  async tokenBalance(account: string) {
+    const balanceBN = await this.tokenContract.balanceOf(account);
+    return ethers.formatUnits(balanceBN);
+  }
+  
   async closeLottery(){
     try {
       const tx = await this.contract.closeLottery();

@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { AppService } from './app.service';
-import { OpenBetsDto } from './dtos/openBets.dto copy';
+import { OpenBetsDto } from './dtos/openBets.dto';
 
 @Controller()
 export class AppController {
@@ -67,6 +67,11 @@ export class AppController {
     return { result: await this.appService.openBets(duration) };
   }
 
+  @Get('token-balance/:account')
+  async tokenBalance(@Param('account') account: string) {
+    return { result: await this.appService.tokenBalance(account) };
+  }
+  
   @Post('close-lottery')
   async closeLottery() {
     return { result: await this.appService.closeLottery() };
