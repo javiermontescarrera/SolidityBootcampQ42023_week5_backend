@@ -84,4 +84,14 @@ export class AppService {
       return { success: false, error: error.message };
     }
   }
+
+  async closeLottery(){
+    try {
+      const tx = await this.contract.closeLottery();
+      const receipt = await tx.wait();
+      return { success: true, transactionHash: receipt?.hash };
+    } catch (error) {
+      return { success: false, error: error.message };
+    }
+  }
 }
