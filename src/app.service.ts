@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { ethers } from 'ethers';
-// import * as tokenJson from './assets/MyToken.json';
-// import * as ballotJson from './assets/TokenizedBallot.json'; //for voting feature
 import * as lotteryJson from './assets/Lottery.json';
+import * as tokenJson from './assets/LotteryToken.json';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AppService {
   contract: ethers.Contract;
+  tokenContract: ethers.Contract;
   provider: ethers.Provider;
   wallet: ethers.Wallet;
 
@@ -24,6 +24,16 @@ export class AppService {
       lotteryJson.abi,
       this.wallet,
     );
+    this.setTokenContract();
+  }
+  
+  async setTokenContract() {
+    const tokenAddress = await this.contract.paymentToken();
+    this.tokenContract = new ethers.Contract(
+      tokenAddress,
+      tokenJson.abi,
+      this.wallet,
+    );
   }
 
   getHello(): string {
@@ -38,10 +48,15 @@ export class AppService {
     return this.configService.get<string>('LOTTERY_ADDRESS');
   }
 
-  // async getTokenName(): Promise<string> {
-  //   const name = await this.contract.name();
-  //   return name;
-  // }
+  async getTokenAddress() {
+    const tokenAddress = await this.contract.paymentToken();
+    return tokenAddress.toString();
+  }
+
+  async getTokenName(): Promise<string> {
+    const name = await this.tokenContract.name();
+    return name;
+  }
 
   // async getTotalSupply() {
   //   const totalSupply = await this.contract.totalSupply();

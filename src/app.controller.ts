@@ -21,10 +21,15 @@ export class AppController {
     return { result: this.appService.getContractAddress() };
   }
 
-  // @Get('token-name')
-  // async getTokenName() {
-  //   return { result: await this.appService.getTokenName() };
-  // }
+  @Get('token-address')
+  async getTokenAddress() {
+   return { ressult: await this.appService.getTokenAddress() };
+  }
+
+  @Get('token-name')
+  async getTokenName() {
+    return { result: await this.appService.getTokenName() };
+  }
 
   // @Get('total-supply')
   // async getTotalSupply() {
