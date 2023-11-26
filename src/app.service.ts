@@ -114,11 +114,12 @@ export class AppService {
       return { success: false, error: error.message };
     }
   }
-    async bet(numberOfBets: string) {
+  
+  async bet(numberOfBets: string) {
     try {
       //approve
       const contractAddress = await this.contract.getAddress();
-      const allowTx = await this.setTokenContract().approve(
+      const allowTx = await this.tokenContract.approve(
         contractAddress,
         ethers.MaxUint256,
       );
@@ -134,8 +135,9 @@ export class AppService {
 
   async buy(amount: string) {
     try {
+      const purchaseRatio = await this.contract.purchaseRatio();
       const tx = await this.contract.purchaseTokens({
-        value: ethers.parseUnits(amount) / TOKEN_RATIO,
+        value: ethers.parseUnits(amount) / purchaseRatio,
       });
       const receipt = await tx.wait();
       return { success: true, transactionHash: receipt?.hash };
