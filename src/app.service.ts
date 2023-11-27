@@ -145,4 +145,14 @@ export class AppService {
       return { success: false, error: error.message };
     }
   }
+
+  async tokenSymbol() {
+    const tokenSymbol = await this.tokenContract.symbol();
+    return (tokenSymbol);
+  }
+
+  async currentPrize() {
+    const currentPrize = await this.contract.prizePool();
+    return (ethers.formatUnits(currentPrize));
+  }
 }

@@ -78,7 +78,8 @@ export class AppController {
   async closeLottery() {
     return { result: await this.appService.closeLottery() };
   }
-    @Post('bet')
+    
+  @Post('bet')
   async bet(@Body() body: betDto) {
     const { numberOfBets } = body;
     return { result: await this.appService.bet(numberOfBets) };
@@ -90,4 +91,13 @@ export class AppController {
     return { result: await this.appService.buy(amount) };
   }
 
+  @Get('get-tokenSymbol')
+  async tokenSymbol() {
+    return { result: await this.appService.tokenSymbol() };
+  }
+
+  @Get('get-curentPrize')
+  async currentPrize() {
+    return { result: await this.appService.currentPrize() };
+  }
 }
